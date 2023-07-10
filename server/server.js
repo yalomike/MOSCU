@@ -5,7 +5,7 @@ const cors = require("cors");
 app.use(express.json());
 app.use(cors());
 
-const db = require("./models/Index");
+const db = require("./models/index");
 
 // Routers
 

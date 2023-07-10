@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
-import Validation from "./SignupValidation";
+// import Validation from "./SignupValidation";
 
 function Signup() {
   const [values, setValues] = useState({
@@ -10,55 +10,54 @@ function Signup() {
     password: "",
   });
 
-  const [errors, setErrors] = useState({});
   const handleInput = (event) => {
     setValues((prev) => ({
       ...prev,
-      [event.target.name]: [event.target.value],
+      [event.target.name]: event.target.value,
     }));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setErrors(Validation(values));
-    if (errors.name === "" && errors.email === "" && errors.password === "") {
-      axios
-        .post("http://localhost:3001/signup", values)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
-    }
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    await axios.post("http://localhost:3001/auth", values, {
+      headers: { accessToken: localStorage.getItem("accessToken") },
+    });
+    Navigate("/");
   };
 
-  //   const handleChange = (event) => {
-  //     setFinalForm((prev) => ({
-  //       ...prev,
-  //       [event.target.name]: [event.target.value],
-  //     }));
-  //   };
+  // if (
+  //   errors.name === "" &&
+  //   errors.username === "" &&
+  //   errors.password === ""
+  // ) {
+  //   try {
+  //     const res = await axios.post("http://localhost:3001/signup", values);
+  //     console.log(res);
 
-  //   const onSubmit = async (data) => {
-  //     await axios.post("http://localhost:3001/auth", data);
-  //     console.log(data);
-  //   };
+  //     const createdUsername = res.data.username;
+  //     console.log("Created username:", createdUsername);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
+  // };
 
   return (
-    <div className="d-flex justify-content-center align-items-center bg-primary vh-100">
-      <div className="bg-white p-3 rounded-w-25">
+    <div className="d-flex justify-content-center align-items-center bg-black vh-100">
+      <div className="bg-white p-4 rounded-2xl rounded-w-25">
         <h2 className="fs-1 mb-3">Sign-Up</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onSubmit}>
           <div className="mb-3">
             <label htmlFor="name">
               <strong>Name:</strong>
             </label>
             <input
-              id="name"
-              name="name"
               type="text"
+              name="name"
               placeholder="Enter Name"
               onChange={handleInput}
               className="form-control rounded-0"
             />
-            {errors.name && <span className="text-danger">{errors.name}</span>}
           </div>
           <div className="mb-3">
             <label htmlFor="email">
@@ -71,9 +70,9 @@ function Signup() {
               onChange={handleInput}
               className="form-control rounded-0"
             />
-            {errors.email && (
-              <span className="text-danger">{errors.email}</span>
-            )}
+            {/* {errors.username && (
+              <span className="text-danger">{errors.username}</span>
+            )} */}
           </div>
 
           <div className="mb-3">
@@ -87,18 +86,21 @@ function Signup() {
               onChange={handleInput}
               className="form-control rounded-0"
             />
-            {errors.password && (
+            {/* {errors.password && (
               <span className="text-danger">{errors.password}</span>
-            )}
+            )} */}
           </div>
 
-          <button type="submit" className="btn btn-success w-100 rounded-0">
+          <button
+            type="submit"
+            className="btn btn-success text-black w-100 rounded-0"
+          >
             Sign up
           </button>
           <p className="mb-3">You are agree to our terms and policies</p>
           <Link
             to="/login"
-            className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none"
+            className="btn  border w-100  hover:bg-blue-500 rounded-0 text-decoration-none"
           >
             Log in
           </Link>

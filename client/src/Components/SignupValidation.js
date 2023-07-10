@@ -1,6 +1,6 @@
 function Validation(values) {
   let error = {};
-  const email_pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const username_pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const password_pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/;
 
   if (values.name === "") {
@@ -9,12 +9,12 @@ function Validation(values) {
     error.name = "";
   }
 
-  if (values.email === "") {
-    error.email = "Email should not be empty";
-  } else if (!email_pattern.test(values.email)) {
-    error.email = "Email didn't match";
+  if (values.username === "") {
+    error.username = "Username should not be empty";
+  } else if (!username_pattern.test(values.username)) {
+    error.username = "Username didn't match";
   } else {
-    error.email = "";
+    error.username = "";
   }
 
   if (values.password === "") {
